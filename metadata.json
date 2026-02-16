@@ -1,0 +1,7 @@
+{
+  "name": "RehabFlow",
+  "description": "A professional recovery assistant that generates personalized exercise routines based on clinical diagnosis and recovery phases, optimized for all Apple devices.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
