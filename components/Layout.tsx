@@ -6,110 +6,153 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-slate-50 antialiased">
-      {/* Mobile Top Bar */}
-      <header className="md:hidden flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-xl border-b sticky top-0 z-50">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-sm shadow-lg shadow-blue-100">R</div>
-          <span className="font-black text-xl text-slate-900 tracking-tight">RehabFlow</span>
-        </div>
-        <button 
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-2 hover:bg-slate-100 rounded-xl transition-colors"
-        >
-          <svg className="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16m-7 6h7" />
-          </svg>
-        </button>
-      </header>
+    <div className="min-h-screen flex flex-col">
+      {/* Header / Navbar Superior */}
+      <nav className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-20">
+            <div className="flex items-center">
+              <div className="flex-shrink-0 flex items-center space-x-3 group cursor-pointer">
+                <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-100 group-hover:rotate-6 transition-all">
+                  R
+                </div>
+                <div>
+                  <span className="text-2xl font-black text-slate-900 tracking-tight">Rehab<span className="text-blue-600">Flow</span></span>
+                  <span className="block text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">Clinical Suite</span>
+                </div>
+              </div>
+              
+              <div className="hidden md:ml-10 md:flex md:space-x-8">
+                <button className="text-sm font-bold text-slate-900 border-b-2 border-blue-600 px-1 pt-1 h-20">Panel Principal</button>
+                <button className="text-sm font-bold text-slate-500 hover:text-slate-900 border-b-2 border-transparent hover:border-slate-300 px-1 pt-1 h-20 transition-all">Pacientes</button>
+                <button className="text-sm font-bold text-slate-500 hover:text-slate-900 border-b-2 border-transparent hover:border-slate-300 px-1 pt-1 h-20 transition-all">Biblioteca</button>
+              </div>
+            </div>
+            
+            <div className="hidden md:flex items-center space-x-6">
+              <div className="flex items-center space-x-3 bg-slate-50 px-4 py-2 rounded-full border border-slate-100">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span className="text-xs font-bold text-slate-600 tracking-tight">Sincronizado</span>
+              </div>
+              <div className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
+                <div className="text-right">
+                  <p className="text-xs font-black text-slate-900 leading-none">Dr. Specialist</p>
+                  <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Plan Médico</p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-blue-100 border-2 border-white shadow-sm flex items-center justify-center text-blue-700 font-bold">
+                  DS
+                </div>
+              </div>
+            </div>
 
-      {/* Sidebar (Desktop/iPad) */}
-      <aside className={`
-        fixed inset-y-0 left-0 z-40 w-80 bg-white border-r border-slate-100 transform transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] md:relative md:translate-x-0
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-      `}>
-        <div className="h-full flex flex-col p-8">
-          <div className="hidden md:flex items-center space-x-3 mb-12">
-            <div className="w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-xl shadow-blue-100">R</div>
-            <div>
-              <span className="font-black text-2xl text-slate-900 tracking-tight block">RehabFlow</span>
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Clinical Management</span>
+            <div className="flex items-center md:hidden">
+              <button 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-all"
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"} />
+                </svg>
+              </button>
             </div>
           </div>
+        </div>
 
-          <nav className="flex-1 space-y-2">
-            <SidebarItem icon="👥" label="Pacientes" active />
-            <SidebarItem icon="📂" label="Expedientes" />
-            <SidebarItem icon="🗓️" label="Agenda" />
-            <SidebarItem icon="📊" label="Estadísticas" />
-            <div className="pt-8 pb-4">
-              <span className="px-4 text-[10px] font-black text-slate-300 uppercase tracking-widest">Sistema</span>
+        {/* Menú Móvil */}
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ${mobileMenuOpen ? 'max-h-64 border-t' : 'max-h-0'}`}>
+          <div className="px-4 py-6 space-y-4 bg-white">
+            <button className="block w-full text-left font-bold text-blue-600 px-4 py-2 bg-blue-50 rounded-xl">Panel Principal</button>
+            <button className="block w-full text-left font-bold text-slate-600 px-4 py-2">Pacientes</button>
+            <button className="block w-full text-left font-bold text-slate-600 px-4 py-2">Configuración</button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Header Contextual */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center space-x-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-[10px] font-black uppercase tracking-widest mb-4">
+                <span>Evidence-Based Practice</span>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                Gestión Clínica <span className="text-blue-600">RehabFlow</span>
+              </h1>
+              <p className="mt-3 text-lg text-slate-500 font-medium leading-relaxed">
+                Tu portal centralizado para la recuperación física de alta precisión, basada en guías internacionales y análisis de IA.
+              </p>
             </div>
-            <SidebarItem icon="⚙️" label="Configuración" />
-            <SidebarItem icon="👤" label="Mi Cuenta" />
-          </nav>
-
-          <div className="mt-auto pt-8">
-            <div className="p-6 bg-slate-900 rounded-[2rem] text-white shadow-2xl shadow-slate-200 overflow-hidden relative">
-              <div className="absolute top-0 right-0 p-4 opacity-10 text-4xl font-black">AI</div>
-              <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">Motor Clínico</p>
-              <p className="text-sm font-bold mb-4">v3.5 Evidence-Based</p>
-              <div className="flex items-center space-x-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></div>
-                <span className="text-[10px] font-bold text-slate-400 uppercase">Sistema Online</span>
+            <div className="hidden lg:flex gap-12 text-center">
+              <div>
+                <p className="text-3xl font-black text-slate-900">100%</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">EBM Verified</p>
+              </div>
+              <div className="w-[1px] bg-slate-200 h-12"></div>
+              <div>
+                <p className="text-3xl font-black text-slate-900">SaaS</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Web Platform</p>
               </div>
             </div>
           </div>
         </div>
-      </aside>
+      </div>
 
-      {/* Main Content Area */}
-      <main className="flex-1 relative overflow-y-auto h-screen scroll-hide">
-        <div className="p-6 md:p-12 pb-32">
+      {/* Contenido Principal */}
+      <main className="flex-grow">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {children}
         </div>
       </main>
 
-      {/* Mobile Bottom Navigation Bar (App style) */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 bg-white/90 backdrop-blur-2xl border-t border-slate-100 flex justify-around p-4 z-50">
-        <button className="flex flex-col items-center space-y-1 text-blue-600">
-          <span className="text-2xl">👥</span>
-          <span className="text-[10px] font-black uppercase">Pacientes</span>
-        </button>
-        <button className="flex flex-col items-center space-y-1 text-slate-400">
-          <span className="text-2xl">📂</span>
-          <span className="text-[10px] font-black uppercase">Archivos</span>
-        </button>
-        <button className="flex flex-col items-center space-y-1 text-slate-400">
-          <span className="text-2xl">📊</span>
-          <span className="text-[10px] font-black uppercase">Reportes</span>
-        </button>
-        <button className="flex flex-col items-center space-y-1 text-slate-400">
-          <span className="text-2xl">⚙️</span>
-          <span className="text-[10px] font-black uppercase">Ajustes</span>
-        </button>
-      </nav>
-
-      {/* Backdrop for mobile interaction */}
-      {sidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-30 md:hidden animate-in fade-in duration-300"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+      {/* Footer del Sitio Web */}
+      <footer className="bg-white border-t border-slate-200 pt-16 pb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div className="col-span-1 md:col-span-1">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-black">R</div>
+                <span className="font-black text-xl text-slate-900 tracking-tight">RehabFlow</span>
+              </div>
+              <p className="text-sm text-slate-400 leading-relaxed font-medium">
+                Soporte de decisiones clínicas para fisioterapeutas y médicos rehabilitadores.
+              </p>
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-6">Herramientas</h4>
+              <ul className="space-y-3 text-sm font-bold text-slate-500">
+                <li><button className="hover:text-blue-600 transition-colors">Nuevo Paciente</button></li>
+                <li><button className="hover:text-blue-600 transition-colors">Protocolos JOSPT</button></li>
+                <li><button className="hover:text-blue-600 transition-colors">Escala EVA AI</button></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-6">Recursos</h4>
+              <ul className="space-y-3 text-sm font-bold text-slate-500">
+                <li><button className="hover:text-blue-600 transition-colors">Guías PEACE & LOVE</button></li>
+                <li><button className="hover:text-blue-600 transition-colors">Webinars Clínicos</button></li>
+                <li><button className="hover:text-blue-600 transition-colors">Criterios de Alta</button></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-6">Soporte</h4>
+              <ul className="space-y-3 text-sm font-bold text-slate-500">
+                <li><button className="hover:text-blue-600 transition-colors">Centro de Ayuda</button></li>
+                <li><button className="hover:text-blue-600 transition-colors">Contacto Profesional</button></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-xs font-bold text-slate-400">© 2024 RehabFlow Portal. Desarrollado para uso clínico profesional.</p>
+            <div className="flex items-center space-x-6">
+              <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Medical Grade Security</span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
-
-const SidebarItem: React.FC<{ icon: string; label: string; active?: boolean }> = ({ icon, label, active }) => (
-  <button className={`
-    w-full flex items-center space-x-4 px-5 py-4 rounded-2xl transition-all duration-300
-    ${active ? 'bg-blue-600 text-white shadow-xl shadow-blue-100 scale-[1.02]' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}
-  `}>
-    <span className="text-xl">{icon}</span>
-    <span className="font-bold text-sm tracking-tight">{label}</span>
-  </button>
-);
