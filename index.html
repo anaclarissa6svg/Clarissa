@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RehabFlow - Portal Clínico de Fisioterapia Inteligente</title>
+    <title>RehabFlow - Plan de Tx</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -12,11 +12,12 @@
           font-family: 'Plus Jakarta Sans', sans-serif;
           scroll-behavior: smooth;
         }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
-        .scroll-hide::-webkit-scrollbar { display: none; }
         .bg-grid {
           background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
           background-size: 32px 32px;
+        }
+        input, select, textarea {
+          font-size: 16px !important;
         }
     </style>
 <script type="importmap">
@@ -34,7 +35,6 @@
 </head>
 <body class="bg-[#F8FAFC] text-slate-900 bg-grid">
     <div id="root"></div>
-    <!-- Punto de entrada para el compilador de Vercel/Vite -->
     <script type="module" src="/index.tsx"></script>
 </body>
 </html>
